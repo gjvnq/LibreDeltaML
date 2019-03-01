@@ -83,7 +83,6 @@ func TreeFromString(data string) (Tree, error) {
 	token, err = decoder.Token()
 	switch tk := token.(type) {
 	case xml.StartElement:
-		// fmt.Printf("Begin element %s:%s\n", tk.Name.Space, tk.Name.Local)
 		root.Token = tk
 		tree_stack.Push(&root)
 	default:
@@ -92,39 +91,33 @@ func TreeFromString(data string) (Tree, error) {
 
 	// For each token
 	for err == nil {
-		fmt.Printf("     ---\n")
+		// Get the current sub tree
 		cursor := tree_stack.Peek()
+		// Get the next token
 		token, err = decoder.Token()
+		// Copy the token we got into a new sub tree
 		child := Tree{}
 		child.Token = xml.CopyToken(token)
-		child.Print(0)
 
-		switch tk := token.(type) {
+		// Decide what to do with the token
+		switch token.(type) {
 		case xml.StartElement:
-			fmt.Printf(">>>> Begin element %s:%s\n", tk.Name.Space, tk.Name.Local)
+			// Add sub tree and go down one level
 			cursor.AddChild(&child)
 			tree_stack.Push(&child)
-		case xml.CharData:
-			fmt.Printf(">>>> Char data: %s\n", string(tk))
-			cursor.AddChild(&child)
 		case xml.EndElement:
-			fmt.Printf(">>>> End element %s:%s\n", tk.Name.Space, tk.Name.Local)
+			// Go up one level and annotate if that sub tree has a dedicated end tag
 			tree_stack.Pop().EndToken = xml.CopyToken(token)
 		default:
-			fmt.Printf(">>>> Got comment, directive or something: %+v\n", tk)
+			// If its not nil, just copy it
 			if token != nil {
 				cursor.AddChild(&child)
 			}
 		}
-		root.Print(0)
 	}
 	if err != nil && err != io.EOF {
-		fmt.Printf(">>>> Got error: %+v\n", err)
 		return root, err
 	}
-	fmt.Printf("-----END-----\n")
-	root.Print(0)
-	fmt.Printf("---------\n")
 
 	return root, nil
 }
