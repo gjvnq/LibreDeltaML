@@ -1,6 +1,7 @@
 package deltaml
 
 import (
+	"bytes"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -19,6 +20,40 @@ func (tree *Tree) AddChild(child *Tree) {
 		tree.Children = make([]*Tree, 0)
 	}
 	tree.Children = append(tree.Children, child)
+}
+
+func (tree Tree) ToXML() ([]byte, error) {
+	buf := new(bytes.Buffer)
+	encoder := xml.NewEncoder(buf)
+	err := tree.ToXMLWithEncoder(encoder)
+	if err != nil {
+		return nil, err
+	}
+	encoder.Flush()
+	return buf.Bytes(), nil
+}
+
+func (tree Tree) ToXMLWithEncoder(encoder *xml.Encoder) error {
+	err := encoder.EncodeToken(tree.Token)
+	if err != nil {
+		panic(err)
+		return err
+	}
+	for _, child := range tree.Children {
+		err = child.ToXMLWithEncoder(encoder)
+		if err != nil {
+			panic(err)
+			return err
+		}
+	}
+	if tree.EndToken != nil {
+		err = encoder.EncodeToken(tree.EndToken)
+		if err != nil {
+			panic(err)
+			return err
+		}
+	}
+	return nil
 }
 
 func (tree Tree) Print(level int) {
