@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"io"
 	"strings"
 )
 
@@ -110,14 +111,18 @@ func TreeFromString(data string) (Tree, error) {
 			fmt.Printf(">>>> End element %s:%s\n", tk.Name.Space, tk.Name.Local)
 			tree_stack.Pop().EndToken = xml.CopyToken(token)
 		default:
+			fmt.Printf(">>>> Got comment, directive or something: %+v\n", tk)
 			if token != nil {
-				fmt.Printf(">>>> Got comment, directive or something: %+v\n", tk)
 				cursor.AddChild(&child)
 			}
 		}
 		root.Print(0)
 	}
-	fmt.Printf("---------\n")
+	if err != nil && err != io.EOF {
+		fmt.Printf(">>>> Got error: %+v\n", err)
+		return root, err
+	}
+	fmt.Printf("-----END-----\n")
 	root.Print(0)
 	fmt.Printf("---------\n")
 
