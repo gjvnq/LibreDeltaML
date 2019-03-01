@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<delta:diff old="ex3_a.xml" new="ex3_b.xml" xmlns:delta="LibreDeltaML">
+<root id="root" title="New Title" delta:old-title="Old Title" delta:changed="@title">
+	<p><delta:add>§1: </delta:add>Lorem Ipsum <delta:del>Dolor</delta:del><delta:add>DOLOR</delta:add> Est</p>
+</root>
+</delta:diff>

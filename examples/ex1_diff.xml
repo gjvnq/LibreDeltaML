@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<delta:diff old="ex1_a.xml" new="ex1_b.xml"  xmlns:delta="LibreDeltaML">
+<root2 delta:changed="elem" delta:was-elem="root1"/>
+</delta:diff>

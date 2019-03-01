@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<delta:diff old="ex4_a.xml" new="ex4_b.xml" xmlns:delta="LibreDeltaML">
+<root id="root2" title="New Title" delta:old-id="root1" delta:old-title="Old Title">
+	<span id="S1" width="100px" height="auto" delta:was-elem="p" delta:old-class="blue" delta:old-height="auto" delta:kept="@height" delta:changed="elem|@id|@width|@class"><delta:add>§1: </delta:add>Lorem Ipsum D<delta:del>olor</delta:del><delta:add>OLOR</delta:add> Est</span>
+</root>
+</delta:diff>

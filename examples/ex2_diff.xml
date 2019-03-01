@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<delta:diff old="ex2_a.xml" new="ex2_b.xml" xmlns:delta="LibreDeltaML">
+<root id="root" title="New Title" delta:old-title="Old Title" delta:was-kept="elem|@id" delta:was-changed="@title">
+	<p>Lorem Ipsum Dolor Est</p>
+</root>
+</delta:diff>
